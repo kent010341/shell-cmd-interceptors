@@ -79,6 +79,10 @@ elif [[ "$branch_name" =~ $BRANCH_PATTERN ]]; then
 
     # validate group 1 of commit message to specified branch group if is set
     if [[ ! -z "$VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP" ]]; then
+      if [[ $VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP -lt 0 ]]; then
+        echo -e "\033[1;91mVariable $VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP should greater than or equal to 0"
+        exit 1
+      fi
       msg_group="${msg_matches[1]}"
       branch_group="${branch_matches[$VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP]}"
       echo $msg_matches
