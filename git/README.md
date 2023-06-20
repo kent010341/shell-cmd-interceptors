@@ -1,5 +1,8 @@
 # Git Commit Interceptor
 
+> I don't know there's Git hook for this kind of use case when I'm writing this script.  
+> You can adjust this script for the `pre-commit` hook.
+
 ## Description
 This script is used for prompt user while trying to use invalid git command.  
 E.g., while trying to commit on master branch, or the commit message isn't valid.
