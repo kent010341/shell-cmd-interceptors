@@ -85,8 +85,6 @@ elif [[ "$branch_name" =~ $BRANCH_PATTERN ]]; then
       fi
       msg_group="${msg_matches[1]}"
       branch_group="${branch_matches[$VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP]}"
-      echo $msg_matches
-      echo $branch_matches
       if [[ "$msg_group" != "$branch_group" ]]; then
         echo -e "\033[1;91mThe group 1 of commit message '$msg_group' does not match the group $VALIDATE_MESSAGE_GROUP_1_TO_BRANCH_GROUP of branch '$branch_group'! Continue? (y/N)\033[0m"
         read confirm
