@@ -51,18 +51,20 @@ elif [[ "$branch_name" =~ $BRANCH_PATTERN ]]; then
   fi
 
   shift
+  has_msg=false
   # find commit message
   while [[ $# -gt 0 ]]; do
     case "$1" in
       "-m")
         shift
         commit_msg="$@"
+        has_msg=true
         break
       ;;
     esac
   done
   # check if commit message is valid
-  if [[ ! -z "$MESSAGE_PATTERN" ]]; then
+  if [[ ! -z "$MESSAGE_PATTERN" ]] && [[ "$has_msg" == "true" ]]; then
     if [[ "$commit_msg" =~ $MESSAGE_PATTERN ]]; then
       msg_matches=("${BASH_REMATCH[@]}")
       # some OS doesn't store regex matches at 'BASH_REMATCH', they use 'match'

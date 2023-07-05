@@ -1,4 +1,4 @@
-# Git Commit Interceptor
+# Git Interceptor
 
 > I don't know there's Git hook for this kind of use case when I'm writing this script.  
 > You can adjust this script for the `pre-commit` hook.
