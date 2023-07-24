@@ -32,6 +32,10 @@ if [[ $# -ne 2 ]]; then
   exit 0
 else
   branch_name=$2
+
+  if [[ "$branch_name" == "-" ]]; then
+    exit 0
+  fi
   # check if it's already at the target branch. If so, exit.
   if [[ "$(git symbolic-ref --short HEAD 2>/dev/null)" == "$branch_name" ]]; then
     echo "Already at the branch $branch_name"
