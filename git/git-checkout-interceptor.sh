@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# git interceptor
+# git checkout interceptor
+#
+# This script is used for fetching remote branch before trying to checkout to an un-fetched branch.
+# Only work when there's no option provided.
 #
 # MIT License
 #
@@ -24,21 +27,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-if [ -z "$INTERCEPTOR_PATH" ]; then
-  echo -e "\033[1;91mEnvrionment vairable 'INTERCEPTOR_PATH' unset or is empty! Please follow the README to set it!\033[0m"
-  return 1
-fi
-source "$INTERCEPTOR_PATH/git/.env"
+# only work with no option
+if [[ $# -ne 2 ]]; then
+  exit 0
+else
+  branch_name=$2
 
-COMMIT_INTERCEPTOR_PATH="$INTERCEPTOR_PATH/git/git-commit-interceptor.sh"
-CHECKOUT_INTERCEPTOR_PATH="$INTERCEPTOR_PATH/git/git-checkout-interceptor.sh"
+  if [[ "$branch_name" == "-" ]]; then
+    exit 0
+  fi
+  # check if it's already at the target branch. If so, exit.
+  if [[ "$(git symbolic-ref --short HEAD 2>/dev/null)" == "$branch_name" ]]; then
+    echo "Already at the branch $branch_name"
+    exit 1
+  fi
 
-if [[ $1 == 'commit' ]]; then
-  "$COMMIT_INTERCEPTOR_PATH" "$@"
-elif [[ $1 == 'checkout' ]]; then
-  "$CHECKOUT_INTERCEPTOR_PATH" "$@"
-fi
+  # check if there's a fetched remote branch. If so, checkout to it.
+  if ! git show-ref --verify -q "refs/heads/$branch_name"; then
+    echo "Can't find $branch_name at local branches. Processing git fetch."
+    git fetch
 
-if [[ $? -eq 0 ]]; then
-  command git "$@"
+    # check if remote branch fetched
+    if ! git show-ref --verify -q "refs/remotes/origin/$branch_name"; then
+      echo "Can't find $branch_name at remote branches!"
+      exit 1
+    fi
+  fi
 fi

@@ -4,8 +4,10 @@
 > You can adjust this script for the `pre-commit` hook.
 
 ## Description
-This script is used for prompt user while trying to use invalid git command.  
-E.g., while trying to commit on master branch, or the commit message isn't valid.
+This script is used for prompt user while trying to use invalid git command, or add some behavior before the command run.  
+
+1. While trying to commit on master branch, or the commit message isn't valid, this script will prompt user with a warning.
+2. While trying to checkout to an un-fetched branch, this script will help you fetch it before checkout to it.
 
 ## Usage
 1. Add an alias for `git`
